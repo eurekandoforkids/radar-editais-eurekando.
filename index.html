@@ -12,9 +12,9 @@ function createCard(x,isTriage){
  const h=document.createElement('h2');h.textContent=x.title;c.append(h);
  const meta=document.createElement('p');meta.textContent=[x.institution,x.area,show(x.status,isTriage?'Em verificação':'Nova')].filter(Boolean).join(' · ');c.append(meta);
  const moneyBox=document.createElement('div');moneyBox.className='bid-value';
- const label=document.createElement('div');label.className='eyebrow';label.textContent='Valor';moneyBox.append(label);
+ const label=document.createElement('div');label.className='eyebrow';label.textContent=(!isTriage&&x.hourlyRates)?'Valor por hora':'Valor';moneyBox.append(label);
  const val=document.createElement('strong');val.textContent=isTriage?show(x.value,'Não verificado'):(x.totalValue!==null&&x.totalValue!==undefined?money(x.totalValue,x.currency):show(x.hourlyRates||x.value,'Não informado — consultar remuneração no edital'));moneyBox.append(val);
- const sub=document.createElement('small');sub.textContent='Equivalente mensal: '+(isTriage?show(x.monthly,'Não calculável'):money(x.monthlyEquivalent,x.currency));moneyBox.append(sub);c.append(moneyBox);
+ const sub=document.createElement('small');sub.textContent='Equivalente mensal: '+(isTriage?show(x.monthly,'Não calculável'):money(x.monthlyEquivalent,x.currency));moneyBox.append(sub);if(!isTriage&&x.hourlyRates){const note=document.createElement('small');note.textContent='Valor total não definido: contratação sob demanda, sem faturamento mensal garantido.';moneyBox.append(note)}c.append(moneyBox);
  addText(c,'Escopo',x.summary||x.scope||x.description||x.technicalBasis||'Consultar objeto no edital oficial');
  addText(c,'Prazo',deadlineText(x));
  addText(c,'Duração',x.duration||(x.durationMonths?x.durationMonths+' meses':'Não verificada'));
